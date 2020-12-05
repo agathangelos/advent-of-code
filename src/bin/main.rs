@@ -1,10 +1,13 @@
 use advent_of_code::file_lines;
-use anyhow::{anyhow, Result};
+use anyhow::{Result, bail};
 
 fn main() -> Result<()> {
     let v = solve_part1()?;
     println!("Part one answer: {}", v[v.len() - 1]);
 
+    let idx = solve_part2(v)?;
+    println!("Idx: {}", idx);
+    
     Ok(())
 }
 
@@ -35,7 +38,7 @@ fn binary_search(s: String, range: u32, idx: u32, upper: char, lower: char) -> R
         } else if c == lower {
             i = idx;
         } else {
-            return Err(anyhow!("unreachable {}", s));
+            bail!("unreachable {}", s);
         }
         let range = range / 2;
         binary_search((s[1..]).to_string(), range, i, upper, lower)
@@ -43,3 +46,15 @@ fn binary_search(s: String, range: u32, idx: u32, upper: char, lower: char) -> R
         Ok(idx)
     }
 }
+ 
+// TODO solve with binary search
+fn solve_part2(v: Vec<u32>) -> Result<u32> {
+    for i in 1..v.len() {
+        if v[i-1]+1 != v[i] {
+            return Ok(v[i] - 1);
+        }
+    }
+
+    bail!("unreachable");
+}
+
