@@ -22,7 +22,7 @@ fn part_1a() -> Result<i32> {
     let lines = file_lines("./input/day08/input.txt")?;
     let lines: Vec<_> = lines.map(|l| l).collect();
     let mut check = vec![false; lines.len()];
-    let re = Regex::new(r"(?P<op>[a-z ]{3}) (?P<sign>[+-])(?P<num>\d+)").unwrap();
+    let re = Regex::new(r"(?P<op>[a-z ]{3}) (?P<num>[+-]\d+)").unwrap();
     let mut counter = 0;
 
     let mut i = 0;
@@ -34,26 +34,16 @@ fn part_1a() -> Result<i32> {
         let captures = re.captures(&lines[i]).unwrap();
 
         let mut op = String::new();
-        let mut sign = String::new();
         let mut num = String::new();
 
         captures.expand("$op", &mut op);
-        captures.expand("$sign", &mut sign);
         captures.expand("$num", &mut num);
 
         if op == "acc" {
-            if sign == "+" {
-                counter += num.parse::<i32>().unwrap();
-            } else {
-                counter -= num.parse::<i32>().unwrap();
-            }
+            counter += num.parse::<i32>().unwrap();
             i += 1;
         } else if op == "jmp" {
-            if sign == "+" {
-                i += num.parse::<usize>().unwrap();
-            } else {
-                i -= num.parse::<usize>().unwrap();
-            }
+            i = (i as i32 + num.parse::<i32>().unwrap()) as usize;
         } else if op == "nop" {
             i += 1;
         }
@@ -80,25 +70,18 @@ fn part_1b() -> Result<i32> {
     let lines = file_lines("./input/day08/input.txt")?;
     let mut commands = Vec::new();
 
-    let re = Regex::new(r"(?P<op>[a-z ]{3}) (?P<sign>[+-])(?P<num>\d+)").unwrap();
+    let re = Regex::new(r"(?P<op>[a-z ]{3}) (?P<num>[+-]\d+)").unwrap();
 
     for line in lines {
         let captures = re.captures(&line).unwrap();
 
         let mut op = String::new();
-        let mut sign = String::new();
         let mut num = String::new();
 
         captures.expand("$op", &mut op);
-        captures.expand("$sign", &mut sign);
         captures.expand("$num", &mut num);
 
-        let n;
-        if sign == "+" {
-            n = num.parse::<i32>().unwrap();
-        } else {
-            n = -num.parse::<i32>().unwrap();
-        }
+        let n = num.parse::<i32>().unwrap();
 
         if op == "acc" {
             commands.push(Some(Command::ACC(n)));
@@ -130,11 +113,7 @@ fn part_1b() -> Result<i32> {
             }
             Some(Command::JMP(n)) => {
                 commands[pc] = Some(Command::JMP(n));
-                pc = if n > 0 {
-                    pc + n as usize
-                } else {
-                    pc - ((-n) as usize)
-                }
+                pc = (pc as i32 + n) as usize;
             }
             Some(Command::NOP(n)) => {
                 commands[pc] = Some(Command::NOP(n,));
@@ -151,26 +130,19 @@ fn part_1c() -> Result<i32> {
     let lines = file_lines("./input/day08/input.txt")?;
     let mut commands = Vec::new();
 
-    let re = Regex::new(r"(?P<op>[a-z ]{3}) (?P<sign>[+-])(?P<num>\d+)").unwrap();
-
+    let re = Regex::new(r"(?P<op>[a-z ]{3}) (?P<num>[+-]\d+)").unwrap();
+    
     for line in lines {
         let captures = re.captures(&line).unwrap();
 
         let mut op = String::new();
-        let mut sign = String::new();
         let mut num = String::new();
 
         captures.expand("$op", &mut op);
-        captures.expand("$sign", &mut sign);
         captures.expand("$num", &mut num);
 
-        let n;
-        if sign == "+" {
-            n = num.parse::<i32>().unwrap();
-        } else {
-            n = -num.parse::<i32>().unwrap();
-        }
-
+        let n = num.parse::<i32>().unwrap();
+        
         if op == "acc" {
             commands.push(Some(Command2::ACC(n, false)));
         } else if op == "jmp" {
@@ -212,25 +184,18 @@ fn part2c() -> Result<i32> {
     let lines = file_lines("./input/day08/input.txt")?;
     let mut commands = Vec::new();
 
-    let re = Regex::new(r"(?P<op>[a-z ]{3}) (?P<sign>[+-])(?P<num>\d+)").unwrap();
+    let re = Regex::new(r"(?P<op>[a-z ]{3}) (?P<num>[+-]\d+)").unwrap();
 
     for line in lines {
         let captures = re.captures(&line).unwrap();
 
         let mut op = String::new();
-        let mut sign = String::new();
         let mut num = String::new();
 
         captures.expand("$op", &mut op);
-        captures.expand("$sign", &mut sign);
         captures.expand("$num", &mut num);
 
-        let n;
-        if sign == "+" {
-            n = num.parse::<i32>().unwrap();
-        } else {
-            n = -num.parse::<i32>().unwrap();
-        }
+        let n = num.parse::<i32>().unwrap();
 
         if op == "acc" {
             commands.push(Some(Command2::ACC(n, false)));
