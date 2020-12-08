@@ -10,7 +10,7 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn solution() -> Result<(u32,u32)> {
+fn solution() -> Result<(u32, u32)> {
     let lines = file_lines("./input/day06/input.txt")?;
     let mut everyone = 0;
     let mut unique: u32 = 0;
