@@ -116,7 +116,7 @@ fn part_1b() -> Result<i32> {
                 pc = (pc as i32 + n) as usize;
             }
             Some(Command::NOP(n)) => {
-                commands[pc] = Some(Command::NOP(n,));
+                commands[pc] = Some(Command::NOP(n));
                 pc += 1
             }
             None => unreachable!(),
@@ -131,7 +131,7 @@ fn part_1c() -> Result<i32> {
     let mut commands = Vec::new();
 
     let re = Regex::new(r"(?P<op>[a-z ]{3}) (?P<num>[+-]\d+)").unwrap();
-    
+
     for line in lines {
         let captures = re.captures(&line).unwrap();
 
@@ -142,7 +142,7 @@ fn part_1c() -> Result<i32> {
         captures.expand("$num", &mut num);
 
         let n = num.parse::<i32>().unwrap();
-        
+
         if op == "acc" {
             commands.push(Some(Command2::ACC(n, false)));
         } else if op == "jmp" {
@@ -159,7 +159,7 @@ fn run(commands: &mut Vec<Option<Command2>>, counter: i32, pc: usize) -> Option<
     if pc == commands.len() {
         return Some(counter);
     }
-    
+
     match commands[pc] {
         Some(Command2::ACC(_, true)) => Some(counter),
         Some(Command2::JMP(_, true)) => Some(counter),
