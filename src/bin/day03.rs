@@ -1,5 +1,5 @@
 use advent_of_code::file_lines;
-use anyhow::{Result};
+use anyhow::Result;
 
 fn main() -> Result<()> {
     let lines = file_lines("./input/day03/input.txt")?;
@@ -20,7 +20,7 @@ fn is_tree(map: &Vec<Vec<char>>, x: usize, y: usize) -> bool {
 
 fn solve_part1(map: &Vec<Vec<char>>, right_inc: usize, down_inc: usize) -> u32 {
     let mut trees = 0;
-    
+
     let mut x = 0;
     let mut y = 0;
 
@@ -37,7 +37,7 @@ fn solve_part1(map: &Vec<Vec<char>>, right_inc: usize, down_inc: usize) -> u32 {
 }
 
 fn solve_part2(map: &Vec<Vec<char>>) -> u32 {
-    let slopes = vec![(1,1), (3,1), (5, 1), (7, 1), (1, 2)];
+    let slopes = vec![(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)];
 
     let mut res = 1;
     for slope in slopes {
